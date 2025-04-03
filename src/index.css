@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+.todo-main-container {
+  @apply bg-yellow-100 min-h-screen p-10 rounded-2xl shadow-lg;
+}
+
+.title-h1 {
+  @apply text-center text-4xl font-bold text-gray-900 dark:text-white tracking-tight leading-tight mb-10;
+}
+
+.title-h2 {
+  @apply text-center text-3xl font-semibold text-gray-800 dark:text-gray-200 tracking-normal leading-snug mb-7;
+}
+
+.title-h3 {
+  @apply text-center text-2xl font-medium text-gray-700 dark:text-gray-300 tracking-wide leading-relaxed mb-7;
+}
+
+.reset-btn {
+  @apply px-4 py-2 border-2 border-solid border-red-600 text-red-700 font-semibold rounded-lg shadow-md my-4;
+}
+
+.add-items-container {
+  @apply mt-4 flex items-center gap-2;
+}
+
+.add-items-input {
+  @apply bg-white px-3 py-2 w-full border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500;
+}
+
+.add-items-btn {
+  @apply px-4 py-2 w-40 bg-cyan-600 text-white font-semibold rounded-lg shadow-md hover:bg-cyan-700 transition;
+}
+
+.item-btn-container {
+  @apply flex items-center gap-5 mt-5 justify-between;
+}
+
+.crat-btn-container {
+  @apply flex flex-row gap-3;
+}
+
+.complete-btn {
+  @apply px-4 py-2 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700 transition w-25;
+}
+
+.delete-btn {
+  @apply px-4 py-2 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 transition w-25;
+}
+
+.edit-btn {
+  @apply px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition w-25;
+}
+
+.update-item-container {
+  @apply flex items-center gap-2 mt-4;
+}
+
+.update-item-input {
+  @apply bg-white px-3 py-2 w-full border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500;
+}
+
+.update-item-save-btn {
+  @apply px-4 py-2 border border-solid border-purple-500 text-purple-700 font-semibold rounded-lg shadow-md w-35;
+}
+
+.update-item-cancel-btn {
+  @apply px-4 py-2 border border-solid border-gray-500 text-gray-600 font-semibold rounded-lg shadow-md w-35;
+}
