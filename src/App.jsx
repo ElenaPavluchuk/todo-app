@@ -1,39 +1,78 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import TodoItem from "./components/TodoItem";
+import axios from "axios";
 
 function App() {
-  const tasks = useSelector((state) => state.tasks.value);
+  const tasks = useSelector((state) => state.tasks.value); // redux store
   const dispatch = useDispatch();
 
   const [newItem, setNewItem] = useState("");
   const [updatedItem, setUpdatedItem] = useState("");
+
+  // on page load
+  useEffect(() => {
+    // get all items from database
+    const getAllItems = async () => {
+      const response = await axios.get("http://localhost:3001/items");
+      console.log("Response from server", response);
+      // save to redux
+      dispatch({
+        type: "tasks/setTasks",
+        payload: response.data.map((item) => {
+          return {
+            id: item._id,
+            item: item.item,
+          };
+        }),
+      });
+    };
+
+    getAllItems();
+  }, [dispatch]);
 
   const handleChange = (e) => {
     setNewItem(e.target.value);
   };
 
   // CRUD:
-  const addItemToRedux = () => {
+  const addItemToRedux = async () => {
+    // save to database API call
+    const response = await axios.post("http://localhost:3001/items", {
+      item: newItem,
+    });
+    console.log("Save item response: ", response);
+
     dispatch({
       type: "tasks/addTask",
-      payload: { id: tasks.length + 1, item: newItem },
+      payload: { id: response.data._id, item: response.data.item },
     });
     setNewItem("");
   };
 
-  const deleteItemFromRedux = (id) => {
+  const deleteItemFromRedux = async (id) => {
     dispatch({
       type: "tasks/deleteTask",
       payload: { id },
     });
+
+    // delete from database API call
+    const response = await axios.delete(`http://localhost:3001/items/${id}`);
+    console.log("response delete", response);
   };
 
-  const completeTaskInRedux = (id) => {
+  const completeTaskInRedux = async (id, isTaskComplete) => {
     dispatch({
       type: "tasks/completeTask",
       payload: id,
     });
+
+    // update task in database to be completed
+    const response = await axios.put(`http://localhost:3001/items/${id}`, {
+      isTaskComplete: !isTaskComplete,
+    });
+
+    console.log("response complete task: ", response);
   };
 
   const updateTaskInRedux = (id, currentItemValue) => {
@@ -43,11 +82,18 @@ function App() {
     });
   };
 
-  const saveUpdatedItemInRedux = (id) => {
+  const saveUpdatedItemInRedux = async (id) => {
     dispatch({
       type: "tasks/saveUpdatedItem",
       payload: { id, item: updatedItem },
     });
+
+    // save updated item in database API call
+    const response = await axios.put(`http://localhost:3001/items/${id}`, {
+      item: updatedItem,
+    });
+
+    console.log("Response from server update: ", response);
   };
   return (
     <div className="todo-main-container">
@@ -74,7 +120,9 @@ function App() {
               <TodoItem
                 key={item.id}
                 item={item}
-                completeTask={() => completeTaskInRedux(item.id)}
+                completeTask={() =>
+                  completeTaskInRedux(item.id, item?.isTaskComplete)
+                }
                 deleteItem={() => deleteItemFromRedux(item.id)}
                 editItem={() => {
                   updateTaskInRedux(item.id, item.item);

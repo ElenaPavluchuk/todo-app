@@ -6,23 +6,24 @@ export const tasksSlice = createSlice({
     value: [],
   },
   reducers: {
+    setTasks: (state, action) => {
+      console.log("payload", action);
+      state.value = action.payload;
+    },
     addTask: (state, action) => {
       console.log("payload", action);
       state.value = [...state.value, action.payload];
     },
-
     deleteTask: (state, action) => {
       console.log("delete task payload", action);
       state.value = state.value.filter((task) => task.id !== action.payload.id);
     },
-
     completeTask: (state, action) => {
       const completedTask = state.value.filter(
         (task) => task.id === action.payload
       )[0];
       completedTask.isTaskComplete = !completedTask.isTaskComplete;
     },
-
     updateTask: (state, action) => {
       const editedTask = state.value.filter(
         (task) => task.id === action.payload.id
