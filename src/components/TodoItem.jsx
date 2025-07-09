@@ -3,23 +3,23 @@ import PropTypes from "prop-types";
 TodoItem.propTypes = {
   item: PropTypes.object.isRequired,
   completeTask: PropTypes.func.isRequired,
-  deleteItem: PropTypes.func.isRequired,
-  editItem: PropTypes.func.isRequired,
-  updatedItem: PropTypes.string.isRequired,
-  onChangeEditItem: PropTypes.func.isRequired,
-  saveUpdatedItem: PropTypes.func.isRequired,
-  cancelEditItem: PropTypes.func.isRequired,
+  deleteTask: PropTypes.func.isRequired,
+  editTask: PropTypes.func.isRequired,
+  updatedTask: PropTypes.string.isRequired,
+  handleChangeEditTask: PropTypes.func.isRequired,
+  saveUpdatedTask: PropTypes.func.isRequired,
+  cancelUpdatedTask: PropTypes.func.isRequired,
 };
 
 export default function TodoItem({
   item,
   completeTask,
-  deleteItem,
-  editItem,
-  updatedItem,
-  onChangeEditItem,
-  saveUpdatedItem,
-  cancelEditItem,
+  deleteTask,
+  editTask,
+  updatedTask,
+  handleChangeEditTask,
+  saveUpdatedTask,
+  cancelUpdatedTask,
 }) {
   return (
     <li key={item.id} className="list-disc ml-5">
@@ -35,13 +35,13 @@ export default function TodoItem({
           </button>
 
           <button
-            onClick={() => editItem(item.id, item.item)}
+            onClick={() => editTask(item.id, item.item)}
             className="edit-btn"
           >
             Edit
           </button>
 
-          <button onClick={() => deleteItem(item.id)} className="delete-btn">
+          <button onClick={() => deleteTask(item.id)} className="delete-btn">
             Delete
           </button>
         </div>
@@ -50,18 +50,18 @@ export default function TodoItem({
       {item.isEdit && (
         <div className="update-item-container">
           <input
-            value={updatedItem}
-            onChange={onChangeEditItem}
+            value={updatedTask}
+            onChange={handleChangeEditTask}
             className="update-item-input"
           />
           <button
-            onClick={() => saveUpdatedItem(item.id)}
+            onClick={() => saveUpdatedTask(item.id)}
             className="update-item-save-btn"
           >
             Save
           </button>
           <button
-            onClick={() => cancelEditItem(item.id)}
+            onClick={() => cancelUpdatedTask(item.id)}
             className="update-item-cancel-btn"
           >
             Cancel

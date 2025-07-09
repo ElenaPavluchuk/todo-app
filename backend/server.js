@@ -1,8 +1,7 @@
 import express from "express";
 import cors from "cors";
 import mongoose, { Schema } from "mongoose";
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config";
 
 const app = express();
 
@@ -65,6 +64,30 @@ app.put("/items/:id", async (req, res) => {
       res.json(item);
     })
     .catch((err) => console.log(err));
+});
+
+const users = [
+  {
+    id: 1,
+    name: "Marina",
+    email: "marina@test.com",
+    password: "12345",
+  },
+];
+
+// login user
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  console.log("user is trying to login: ", email, password);
+
+  const user = users.find((user) => user.email === email);
+  console.log("user found: ", user);
+
+  if (!user) {
+    return res.status(401).json({ message: "user not found" });
+  }
+
+  return res.status(201).json({ message: "login succsessfull" });
 });
 
 // Server running
