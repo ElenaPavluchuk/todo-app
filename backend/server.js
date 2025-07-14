@@ -71,23 +71,28 @@ const users = [
     id: 1,
     name: "Marina",
     email: "marina@test.com",
-    password: "12345",
+    hashedPassword:
+      "$2a$10$uOI.RylLCp7/mx73fbh/4uMYM/gfj0V1e.mJXjDrp3WCdcGaKhOKm",
   },
 ];
 
 // login user
 app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  console.log("user is trying to login: ", email, password);
+  const { email, hashedPassword } = req.body;
+  // console.log("user is trying to login: ", email, password);
 
   const user = users.find((user) => user.email === email);
-  console.log("user found: ", user);
+  // console.log("user found: ", user);
 
   if (!user) {
     return res.status(401).json({ message: "user not found" });
   }
 
-  return res.status(201).json({ message: "login succsessfull" });
+  // if (user.hashedPassword !== hashedPassword) {
+  //   return res.status(401).json({ message: "wrong password" });
+  // }
+
+  res.status(200).json({ hashedPassword: user.hashedPassword });
 });
 
 // Server running
