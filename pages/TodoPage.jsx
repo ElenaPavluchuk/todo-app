@@ -9,8 +9,7 @@ function TodoPage() {
   // redux
   const tasks = useSelector((state) => state.tasks.value);
   const dispatch = useDispatch();
-
-  // state
+  // component state
   const [newItem, setNewItem] = useState("");
   const [updatedItem, setUpdatedItem] = useState("");
 
@@ -29,8 +28,9 @@ function TodoPage() {
         type: "tasks/setTasks",
         payload: response.data.map((item) => {
           return {
-            id: item._id,
+            id: item.id,
             item: item.item,
+            isTaskComplete: item.is_task_complete,
           };
         }),
       });
@@ -51,7 +51,7 @@ function TodoPage() {
     dispatch({
       type: "tasks/addTask",
       payload: {
-        id: response.data._id,
+        id: response.data.id,
         item: response.data.item,
         userId: localStorage.getItem("userId"),
       },
@@ -70,9 +70,11 @@ function TodoPage() {
     });
   };
 
-  const completeItem = async (id, isTaskComplete) => {
+  const completeItem = async (id, isTaskComplete, item) => {
+    console.log("completing task: ", id, isTaskComplete);
     // update task in database to be completed
     const response = await axios.put(`http://localhost:3001/items/${id}`, {
+      item: item,
       isTaskComplete: !isTaskComplete,
     });
     console.log("response complete task: ", response);
@@ -143,7 +145,9 @@ function TodoPage() {
               <TodoItem
                 key={item.id}
                 item={item}
-                completeTask={() => completeItem(item.id, item?.isTaskComplete)}
+                completeTask={() =>
+                  completeItem(item.id, item?.isTaskComplete, item.item)
+                }
                 deleteTask={() => deleteItem(item.id)}
                 editTask={() => {
                   updateItem(item.id, item.item);
