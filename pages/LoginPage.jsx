@@ -4,11 +4,13 @@ import { useNavigate } from "react-router";
 import bcrypt from "bcryptjs-react";
 
 export default function LoginPage() {
+  // component state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  //hooks
   const navigate = useNavigate();
 
   const validate = () => {
@@ -31,7 +33,7 @@ export default function LoginPage() {
         email,
       });
 
-      console.log("response from server: ", response);
+      // console.log("response from server: ", response);
 
       if (response.status === 200) {
         const isAuth = bcrypt.compareSync(
@@ -42,7 +44,7 @@ export default function LoginPage() {
 
         if (isAuth) {
           localStorage.setItem("isAuth", true);
-          localStorage.setItem("userId", response.data.id);
+          localStorage.setItem("userId", response.data.userId);
           navigate("/todo");
         }
       }
@@ -69,8 +71,8 @@ export default function LoginPage() {
         hashedPassword: hash,
       });
 
-      console.log("register response: ", response);
-      if (response.status === 200) {
+      //console.log("register response: ", response);
+      if (response.status === 201) {
         setMessage("Registration successful! You can now login.");
         setIsRegister(false);
       }
