@@ -29,7 +29,7 @@ export default function LoginPage() {
     console.log("hashed password: ", hash);
 
     try {
-      const response = await axios.post("http://localhost:3001/login", {
+      const response = await axios.post("http://localhost:3001/users/login", {
         email,
       });
 
