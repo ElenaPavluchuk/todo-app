@@ -21,5 +21,8 @@ module.exports = {
       directory: path.resolve(__dirname, "migrations"),
       tableName: "knex_migrations",
     },
+    seeds: {
+      directory: path.resolve(__dirname, "seeds"),
+    },
   },
 };
