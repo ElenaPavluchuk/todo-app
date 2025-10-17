@@ -7,11 +7,11 @@ const path = require("path");
 
 module.exports = {
   development: {
-    client: "postgresql",
+    client: process.env.DB_CLIENT,
     connection: {
-      database: "todo",
-      user: "elenapavlucuk",
-      password: "040824",
+      database: process.env.DB_NAME,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
     },
     pool: {
       min: 2,

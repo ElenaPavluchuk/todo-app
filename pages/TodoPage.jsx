@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import TodoItem from "../src/components/TodoItem";
-import axios from "axios";
 import { useNavigate } from "react-router";
+import api from "../src/api";
 
 function TodoPage() {
   const navigate = useNavigate();
@@ -17,12 +17,12 @@ function TodoPage() {
   useEffect(() => {
     // get all items from database
     const getAllItems = async () => {
-      const response = await axios.get("http://localhost:3001/items", {
+      const response = await api.get("/items", {
         params: {
           userId: localStorage.getItem("userId"),
         },
       });
-      console.log("Response from server", response);
+
       // save to redux
       dispatch({
         type: "tasks/setTasks",
@@ -39,14 +39,11 @@ function TodoPage() {
     getAllItems();
   }, [dispatch]);
 
-  // CRUD:
   const addItem = async () => {
-    // save to database API call
-    const response = await axios.post("http://localhost:3001/items", {
+    const response = await api.post("/items", {
       item: newItem,
       userId: localStorage.getItem("userId"),
     });
-    console.log("Save item response: ", response);
 
     dispatch({
       type: "tasks/addTask",
@@ -60,9 +57,7 @@ function TodoPage() {
   };
 
   const deleteItem = async (id) => {
-    // delete from database API call
-    const response = await axios.delete(`http://localhost:3001/items/${id}`);
-    console.log("response delete", response);
+    await api.delete(`/items/${id}`);
 
     dispatch({
       type: "tasks/deleteTask",
@@ -71,13 +66,10 @@ function TodoPage() {
   };
 
   const completeItem = async (id, isTaskComplete, item) => {
-    console.log("completing task: ", id, isTaskComplete);
-    // update task in database to be completed
-    const response = await axios.put(`http://localhost:3001/items/${id}`, {
+    await api.put(`items/${id}`, {
       item: item,
       isTaskComplete: !isTaskComplete,
     });
-    console.log("response complete task: ", response);
 
     dispatch({
       type: "tasks/completeTask",
@@ -93,11 +85,9 @@ function TodoPage() {
   };
 
   const saveUpdatedItem = async (id) => {
-    // save updated item in database API call
-    const response = await axios.put(`http://localhost:3001/items/${id}`, {
+    await api.put(`/items/${id}`, {
       item: updatedItem,
     });
-    console.log("Response from server update: ", response);
 
     dispatch({
       type: "tasks/saveUpdatedTask",
