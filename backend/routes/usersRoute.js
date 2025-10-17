@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
       message: "user registered successfully",
     });
   } catch (err) {
-    console.log(err);
+    console.error("register error: ", err);
   }
 });
 
@@ -41,8 +41,6 @@ router.post("/login", async (req, res) => {
     if (!user) {
       return res.status(401).json({ message: "user not found" });
     }
-
-    // console.log("logged in user: ", user);
 
     res.status(200).json({
       hashedPassword: user.hashed_password,

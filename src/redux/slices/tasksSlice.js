@@ -7,7 +7,6 @@ export const tasksSlice = createSlice({
   },
   reducers: {
     setTasks: (state, action) => {
-      console.log("payload", action);
       state.value = action.payload;
     },
 

@@ -14,7 +14,6 @@ router.post("/", async (req, res) => {
       })
       .returning("*");
 
-    // console.log("result POST items: ", result);
     res.status(201).json(result[0]);
   } catch (err) {
     console.error("error creating a todo item: ", err);
@@ -29,7 +28,6 @@ router.get("/", async (req, res) => {
   try {
     const result = await knex("todos").where({ user_id: userId });
 
-    // console.log("GET items result", result);
     res.json(result);
   } catch (err) {
     console.error("error getting user items", err);
@@ -44,7 +42,6 @@ router.delete("/:id", async (req, res) => {
   try {
     const result = await knex("todos").where({ id }).del().returning("*");
 
-    // console.log("deleting todo items: ", result);
     res.json(result);
   } catch (err) {
     console.error("error deleting a todo item", err);
@@ -56,7 +53,6 @@ router.delete("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const id = req.params.id;
   const { item, isTaskComplete } = req.body;
-  // console.log("UPDATED ITEM: ", item, isTaskComplete);
 
   try {
     const result = await knex("todos")
@@ -64,7 +60,6 @@ router.put("/:id", async (req, res) => {
       .update({ item, is_task_complete: isTaskComplete })
       .returning("*");
 
-    // console.log("updating todo item: ", result);
     res.json(result);
   } catch (err) {
     console.error("error updating item: ", err);

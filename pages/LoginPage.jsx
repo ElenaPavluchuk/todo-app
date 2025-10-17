@@ -1,7 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router";
 import bcrypt from "bcryptjs-react";
+import api from "../src/api";
 
 export default function LoginPage() {
   // component state
@@ -10,7 +10,7 @@ export default function LoginPage() {
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  //hooks
+  // hooks
   const navigate = useNavigate();
 
   const validate = () => {
@@ -24,23 +24,16 @@ export default function LoginPage() {
   const login = async () => {
     if (!validate()) return;
 
-    var salt = bcrypt.genSaltSync(10);
-    var hash = bcrypt.hashSync(password, salt);
-    console.log("hashed password: ", hash);
-
     try {
-      const response = await axios.post("http://localhost:3001/users/login", {
+      const response = await api.post("/users/login", {
         email,
       });
-
-      // console.log("response from server: ", response);
 
       if (response.status === 200) {
         const isAuth = bcrypt.compareSync(
           password,
           response.data.hashedPassword
         );
-        // console.log(isAuth);
 
         if (isAuth) {
           localStorage.setItem("isAuth", true);
@@ -57,23 +50,19 @@ export default function LoginPage() {
   };
 
   const register = async () => {
-    console.log("redirect to register page");
-
     if (!validate()) return;
 
     var salt = bcrypt.genSaltSync(10);
     var hash = bcrypt.hashSync(password, salt);
 
-    // call register user API
     try {
-      const response = await axios.post("http://localhost:3001/users", {
+      const response = await api.post("/users", {
         email,
         hashedPassword: hash,
       });
 
-      //console.log("register response: ", response);
       if (response.status === 201) {
-        setMessage("Registration successful! You can now login.");
+        setMessage("Registration successful! You can now login");
         setIsRegister(false);
       }
     } catch (err) {
